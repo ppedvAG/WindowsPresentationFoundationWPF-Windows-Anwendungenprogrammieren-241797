@@ -1,0 +1,133 @@
+﻿<Window x:Class="M004.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:M004"
+        Title="MainWindow"
+		Height="450"
+		Width="300"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BVC"/>
+		<local:DoubleToDateConverter x:Key="DDC"/>
+	</Window.Resources>
+	<StackPanel Margin="5">
+		<!--Bindings-->
+		<!--Ermöglichen, zwei UI Komponenten miteinander zu verbinden-->
+		<!--Wenn sich bei der einen Komponente etwas ändert, wird diese Änderung der anderen Komponente weitergegeben-->
+
+		<!--M002: Slider Wert in TextBlock schreiben, aber per Bindings-->
+		<!--Binding von Slider.Value auf TextBlock.Text-->
+
+		<!--Dinge zu beachten bei Bindings:-->
+		<!--Bindings müssen immer am Ziel definiert werden-->
+		<!--Bindings müssen immer zwischen zwei DependencyProperties angewandt werden-->
+		<TextBlock>
+			<TextBlock.Text>
+				<!--Hier innerhalb des Text Properties ein Binding Objekt ablegen-->
+				<!--ElementName: Name der anderen Komponente an die gebunden werden soll-->
+				<!--Path: Name des Properties der anderen Komponente, welcher gebunden werden soll-->
+				<Binding ElementName="NumberSlider" Path="Value"
+						 StringFormat="Schriftgröße: {0}"/>
+			</TextBlock.Text>
+			<TextBlock.FontSize>
+				<Binding ElementName="NumberSlider" Path="Value"/>
+			</TextBlock.FontSize>
+			<TextBlock.Margin>
+				<Binding ElementName="NumberSlider" Path="Value"/>
+			</TextBlock.Margin>
+		</TextBlock>
+		<Slider Name="NumberSlider" Minimum="10" Maximum="100"
+				TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+		<!--BindingMode-->
+		<!--Bestimmt die Richtung des Bindings-->
+		<!--Standardmäßig: TwoWay-->
+		<!--OneWay, OneWayToSource, OneTime-->
+		<TextBox Name="TB">
+			<TextBox.Text>
+				<Binding ElementName="TBSlider"
+						 Path="Value"
+						 UpdateSourceTrigger="Explicit"
+						 FallbackValue="0"/>
+			</TextBox.Text>
+		</TextBox>
+		<Slider Name="TBSlider"/>
+
+		<!--UpdateSourceTrigger-->
+		<!--Definiert, unter welchen Bedingungen das Update eines Bindings passieren soll-->
+		<!--Standard: Kommt auf die Komponente an (Text: LostFocus, Slider: PropertyChanged)-->
+		<!--PropertyChanged: Wenn das Property sich ändert-->
+		<!--LostFocus: Wenn die Komponente den Fokus verliert-->
+		<!--Explicit: Macht keine Updates, es sei denn im Code Behind wird das Update erzwungen-->
+		<Button Click="Button_Click" Content="Update Slider"/>
+
+		<!--MarkupExtension-->
+		<!--Kurzform des Bindings-->
+		<!--Einzeilig statt ausgelagert-->
+		<TextBox Text="{Binding ElementName=TB2Slider, Path=Value, UpdateSourceTrigger=PropertyChanged}"/>
+		<Slider Name="TB2Slider"/>
+
+		<!--Converter-->
+		<!--Bearbeiten den Wert vor der Bindung, damit der gegebene Wert mit dem Ziel kompatibel ist-->
+		<!--z.B. Slider.Value <-> TextBlock.Text-->
+		<!--double -> string ist möglich-->
+		<!--string -> double ist nicht immer möglich-->
+		<CheckBox Content="Combobox anzeigen" Name="CB"/>
+		<ComboBox>
+			<ComboBox.Visibility>
+				<Binding ElementName="CB" Path="IsChecked">
+					<Binding.Converter>
+						<BooleanToVisibilityConverter/>
+						<!--In der Langform einen Converter innerhalb des Binding Tags einbinden-->
+					</Binding.Converter>
+				</Binding>
+			</ComboBox.Visibility>
+		</ComboBox>
+		<!--Ohne Converter: Binding Failure, bool und Visibility nicht kompatibel-->
+
+		<!--Auf Window Ebene: -->
+		<!--<Window.Resources>
+			<BooleanToVisibilityConverter x:Key="BVC"/>
+		</Window.Resources>-->
+		<!--Danach kann der Converter per StaticResource eingebunden werden-->
+		<ComboBox Visibility="{Binding ElementName=CB, Path=IsChecked, Converter={StaticResource BVC}}"/>
+
+		<!--Aufgabe: Slider zu Datum-->
+		<!--Innerhalb von WPF gibt es keinen double zu Datum Converter -> Eigener Converter-->
+		<!--WICHTIG: Resource anlegen-->
+		<!--<DatePicker>
+			<DatePicker.SelectedDate>
+				<Binding ElementName="DateSlider" Path="Value">
+					<Binding.Converter>
+						<local:DoubleToDateConverter/>
+					</Binding.Converter>
+				</Binding>
+			</DatePicker.SelectedDate>
+		</DatePicker>-->
+		<DatePicker SelectedDate="{Binding ElementName=DateSlider, Path=Value, Converter={StaticResource DDC}}"/>
+		<Slider Name="DateSlider" Maximum="750000" TickFrequency="1" IsSnapToTickEnabled="True"/>
+
+		<!--Multibinding-->
+		<!--Selbiges wie normales Binding, aber mit mehreren Quellen-->
+		<!--Benötigt immer einen Converter-->
+		<!--Aufgabe: Drei Slider zu einem DatePicker (Tag, Monat, Jahr)-->
+		<DatePicker>
+			<DatePicker.SelectedDate>
+				<MultiBinding>
+					<Binding ElementName="TagSlider" Path="Value"/>
+					<Binding ElementName="MonatSlider" Path="Value"/>
+					<Binding ElementName="JahrSlider" Path="Value"/>
+					<MultiBinding.Converter>
+						<local:ThreeDoubleToDateConverter/>
+					</MultiBinding.Converter>
+				</MultiBinding>
+			</DatePicker.SelectedDate>
+		</DatePicker>
+		<Slider Name="TagSlider" Minimum="1" Maximum="31"/>
+		<Slider Name="MonatSlider" Minimum="1" Maximum="12"/>
+		<Slider Name="JahrSlider" Minimum="1900" Maximum="2024"/>
+	</StackPanel>
+</Window>
