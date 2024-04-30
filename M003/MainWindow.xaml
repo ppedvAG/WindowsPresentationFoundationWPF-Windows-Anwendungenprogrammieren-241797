@@ -1,0 +1,144 @@
+﻿<Window x:Class="M003.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M003"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="300"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<!--Links, Oben, Rechts, Unten-->
+	<StackPanel Margin="5" Background="Aqua">
+		<!--1 Koordinate: Alle Seiten-->
+		<!--2 Koordinaten: X, Y-->
+		<!--4 Koordinaten: Links, Oben, Rechts, Unten-->
+		<Button Content="Test" Margin="2.5 10" Padding="100 0 0 0"/>
+		<Button Content="Left" HorizontalContentAlignment="Left"/>
+		<Button Content="Right" HorizontalContentAlignment="Right"/>
+		<StackPanel Orientation="Horizontal" Height="60">
+			<Button Content="Top" VerticalAlignment="Top"/>
+			<Button Content="Center" VerticalAlignment="Center"/>
+			<Button Content="Bottom" VerticalAlignment="Bottom"/>
+		</StackPanel>
+
+		<!--Attached Properties-->
+		<!--Properties, welche von oben weitervererbt werden (v.a. bei Grid, DockPanel)-->
+		<Grid>
+			<Button Grid.Column="1"/>
+		</Grid>
+		<Canvas>
+			<Line X1="10" X2="50" Y1="10" Y2="20" Stroke="Orange" StrokeThickness="10"
+				  Canvas.Left="200" Canvas.Top="20"/>
+		</Canvas>
+
+		<!--WrapPanel-->
+		<!--Funktioniert wie StackPanel, aber kann wrappen-->
+		<!--<WrapPanel Orientation="Horizontal"/>-->
+		<StackPanel Orientation="Horizontal" Height="50">
+			<Button Content="Hallo" Height="30"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+			<Button Content="Hallo"/>
+		</StackPanel>
+
+		<!--DockPanel-->
+		<!--Platziert Elemente an den Rändern (L, R, T, B)-->
+		<!--WICHTIG: Reihenfolge der Elemente beachten (z.B. volle Breite für Top)-->
+		<!--Letztes Element ist in der Mitte, sollte ein Layoutcontainer sein-->
+		<DockPanel LastChildFill="True">
+			<Button Content="Top" DockPanel.Dock="Top"/>
+			<Button Content="Bottom" DockPanel.Dock="Bottom"/>
+			<Button Content="Left" DockPanel.Dock="Left"/>
+			<Button Content="Right" DockPanel.Dock="Right"/>
+
+			<!--<TextBlock Text="Ein Text in der Mitte"/>-->
+			<StackPanel Orientation="Horizontal">
+				<Button Content="T1"/>
+				<Button Content="T2"/>
+				<Button Content="T3"/>
+			</StackPanel>
+		</DockPanel>
+
+		<!--Grid-->
+		<!--Positionierung mittels Rows und Columns-->
+		<!--Rows und Columns werden per Row-/ColumnDefinitions erzeugt-->
+		<!--Breite, Höhe wird auch per Definitions gesetzt-->
+		<!--Jede Komponente benötigt einen Row- und Column Index-->
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<!--*: Passt die Breite auf die Gesamtbreite an, mit Rücksichtnahme auf die anderen Breiten-->
+				<ColumnDefinition Width="1*" MinWidth="50"/>
+				<!--16%, 1/6 (aber mindestens 50px)-->
+				<ColumnDefinition Width="2*"/>
+				<!--33%, 2/6-->
+				<ColumnDefinition Width="3*"/>
+				<!--51%, 3/6-->
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50"/>
+				<RowDefinition/>
+				<!--Höhen passen sich auf die Inhalte an-->
+				<RowDefinition Height="Auto"/>
+				<!--Wenn eine fixe Breite/Höhe angegeben wird, sind die anderen Rows/Columns auf Auto-->
+			</Grid.RowDefinitions>
+			<Button Content="C1"/>
+			<Button Content="C2" Grid.Column="1" Grid.RowSpan="2"/>
+			<Button Content="C2R1" Grid.Column="2" Grid.Row="1"/>
+			<Button Content="R1" Grid.Row="1"/>
+			<Button Content="R2" Grid.Row="2" Grid.ColumnSpan="3"/>
+			<!--ColumnSpan/RowSpan: Breitet die Komponente über mehrere Rows/Columns aus-->
+		</Grid>
+
+		<!--UniformGrid-->
+		<!--Grid, welches automatisch Rows und Columns erstellt-->
+		<!--Hier sind alle Elemente gleich groß-->
+		<UniformGrid Rows="3" Columns="3">
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+			<Button Content="Test"/>
+		</UniformGrid>
+
+		<!--ViewBox-->
+		<!--Skaliert die Inhalte anhand der Fenstergröße bzw. umliegenden Layoutcontainern-->
+		<Viewbox Height="150">
+			<Button Content="Hallo"/>
+		</Viewbox>
+
+		<!--Border-->
+		<!--Ermöglicht, einen Rahmen um beliebige Komponenten zu ziehen-->
+		<!--Sollte generell einen Layoutcontainer enthalten-->
+		<Border BorderBrush="Yellow" BorderThickness="5">
+			<StackPanel>
+				<TextBlock Text="Gelber Inhalt"/>
+				<TextBlock Text="Gelber Inhalt"/>
+			</StackPanel>
+		</Border>
+
+		<!--ScrollViewer-->
+		<!--Ermöglicht, Inhalte zu Scrollen-->
+		<!--Inhalt sollte wie bei Border ein Layoutcontainer-->
+		<!--WICHTIG: Inhalt ist nur scrollbar, wenn die Höhe des ScrollViewers vorgegeben ist (entweder per Height= oder per umliegenden Container)-->
+		<!--Standardwerte: 
+					  VerticalScrollBarVisibility="Visible"
+					  HorizontalScrollBarVisibility="Disabled"-->
+		<ScrollViewer Height="150"
+					  VerticalScrollBarVisibility="Auto">
+			<Grid>
+				<TextBlock Text="wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" TextWrapping="Wrap"/>
+			</Grid>
+		</ScrollViewer>
+	</StackPanel>
+</Window>
