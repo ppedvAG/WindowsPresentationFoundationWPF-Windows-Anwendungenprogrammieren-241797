@@ -6,7 +6,7 @@
 		WindowStartupLocation="CenterScreen"
 		Topmost="True"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <StackPanel>
+	<StackPanel>
 		<!--DataBinding-->
 		<!--Selbiges wie PropertyBinding, aber hier wird eine UI-Komponente und ein Backend Objekt gebunden statt zwei UI-Komponenten-->
 		<!--Wir benötigen hierfür zwei Dinge: DataContext, INotifyPropertyChanged-->
@@ -42,7 +42,17 @@
 		<Button Content="Alter++" Click="Button_Click"/>
 
 		<!--Diese ListBox zeigt automatisch neue Elemente, die in die Liste hineinkommen an-->
-		<ListBox ItemsSource="{Binding personen}"/>
+		<ListBox ItemsSource="{Binding personen}">
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="local:Person"> <!--Vorgriff auf M008 (Templates)-->
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Vorname}"/>
+						<TextBlock Text="{Binding Nachname}"/>
+						<TextBlock Text="{Binding Alter}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 		<Button Content="Person hinzufügen" Click="Button_Click_1"/>
 	</StackPanel>
 </Window>

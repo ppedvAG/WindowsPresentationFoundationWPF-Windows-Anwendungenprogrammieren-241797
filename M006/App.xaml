@@ -1,0 +1,23 @@
+﻿<Application x:Class="M006.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:M006"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+		<!--ResourceDictionaries-->
+		<!--Ermöglichen, Resourcen in externen Dateien anzulegen, welche dann in weiterer Folge importiert werden können-->
+		<!--Verwendung: Themes-->
+		
+		<!--Einzelnes RD einbinden-->
+		<!--<ResourceDictionary Source="GlobalStyles.xaml"/>-->
+		
+		<!--Mehrere Dictionaries einbinden mit MergedDictionaries-->
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<!--Standardstyles in WPF-->
+				<ResourceDictionary Source="/PresentationFramework.Classic;component/themes/Classic.xaml"/>
+				<ResourceDictionary Source="GlobalStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>

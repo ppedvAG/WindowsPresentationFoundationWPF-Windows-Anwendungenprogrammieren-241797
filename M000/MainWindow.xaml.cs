@@ -1,24 +1,28 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
-namespace M000
+namespace M000;
+
+public partial class MainWindow : Window
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window
+	public Person person { get; set; } = new Person();
+
+	public MainWindow()
 	{
-		public MainWindow()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
+	}
+
+	private void OKClicked(object sender, RoutedEventArgs e)
+	{
+		MessageBox.Show($"{person.Vorname}\n{person.Nachname}\n...", "Derzeitige Person", MessageBoxButton.YesNo, MessageBoxImage.Information);
+	}
+
+	private void AbbrechenClicked(object sender, RoutedEventArgs e)
+	{
+		//person aus DB laden
+		person.Vorname = "Max";
+		person.Nachname = "Mustermann";
+		person.GebDat = new DateTime(2000, 01, 01);
+		person.Verheiratet = true;
+		person.Geschlecht = Geschlecht.D;
 	}
 }
