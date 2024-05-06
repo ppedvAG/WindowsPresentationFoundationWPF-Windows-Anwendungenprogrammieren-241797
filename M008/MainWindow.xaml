@@ -1,0 +1,22 @@
+﻿<Window x:Class="M008.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M008"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+		mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+		<!--MarkupExtensions-->
+		<!--Code innerhalb von { } im XAML-->
+		<!--Beispiele für MarkupExtensions: Binding, StaticResource, TemplateBinding, ...-->
+		
+		<!--MarkupExtensions haben eine Methode namens ProvideValue, diese gibt den Wert an die Komponente weiter-->
+		<!--In WPF können wir eigene MarkupExtensions schreiben-->
+		
+		<!--Aufgabenstellung: Enum an ComboBox anbinden-->
+		<!--Lösungsansatz: Eigene MarkupExtension schreiben, welche ein Array von Enumwerten herauswirft-->
+		<ComboBox ItemsSource="{local:Enum  sys:DayOfWeek}"/>
+	</Grid>
+</Window>
