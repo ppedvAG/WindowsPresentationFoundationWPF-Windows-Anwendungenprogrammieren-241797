@@ -1,0 +1,82 @@
+﻿<Window x:Class="M007.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M007"
+        Title="MainWindow" Height="450" Width="300"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<Window.Resources>
+		<!--WICHTIG: DataType definieren-->
+		<DataTemplate DataType="{x:Type local:Person}">
+			<StackPanel	Orientation="Horizontal">
+				<TextBlock Text="{Binding Vorname}" Margin="0, 0, 3, 0"/>
+				<TextBlock Text="{Binding Nachname}" FontWeight="Bold"/>
+				<Line Stroke="Black" Margin="5, 0" Y1="0" Y2="15"/>
+				<TextBlock Text="{Binding Alter}"/>
+			</StackPanel>
+		</DataTemplate>
+	</Window.Resources>
+	<StackPanel>
+		<!--Templates-->
+		<!--Ermöglichen, die Veränderung von Komponenten selbst (ControlTemplate) oder die Darstellung von Daten innerhalb von Komponenten (DataTemplate)-->
+
+		<!--ControlTemplate-->
+		<!--Ermöglicht einen grundlegenden Neuaufbau der Komponente-->
+		<Button Content="Test"
+				Background="LightGreen">
+			<!--Template gibt es bei jeder Komponente in WPF-->
+			<Button.Template>
+				<!--WICHTIG: TargetType definieren-->
+				<ControlTemplate TargetType="Button">
+					<Border BorderBrush="Aqua" BorderThickness="2">
+						<!--TemplateBinding-->
+						<!--Innerhalb von Templates auf Eigenschaften zugreifen, welche auf der Komponente gesetzt werden-->
+						<TextBlock Text="{TemplateBinding Content}"
+								   Background="{TemplateBinding Background}"
+								   TextAlignment="Center"/>
+					</Border>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+		
+		<!--DataTemplate-->
+		<!--Items innerhalb von Listenkomponenten verändern-->
+		<ListBox ItemsSource="{Binding personen}">
+			<!--<ListBox.ItemTemplate>
+				--><!--WICHTIG: DataType definieren--><!--
+				<DataTemplate DataType="local:Person">
+					<StackPanel	Orientation="Horizontal">
+						<TextBlock Text="{Binding Vorname}" Margin="0, 0, 3, 0"/>
+						<TextBlock Text="{Binding Nachname}" FontWeight="Bold"/>
+						<Line Stroke="Black" Margin="5, 0" Y1="0" Y2="15"/>
+						<TextBlock Text="{Binding Alter}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>-->
+		</ListBox>
+		
+		<!--Template hier global in Window.Resources abgelegt-->
+		<ComboBox ItemsSource="{Binding personen}"/>
+		<Button Click="Button_Click"
+				Content="Person erstellen"/>
+		
+		<!--ItemsPanelTemplate-->
+		<!--Container einer Listenkomponente verändern-->
+		<!--z.B. StackPanel austauschen mit UniformGrid-->
+		<ListBox ItemsSource="{Binding personen}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid Columns="3"/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+		<ComboBox ItemsSource="{Binding personen}">
+			<ComboBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid Columns="3"/>
+				</ItemsPanelTemplate>
+			</ComboBox.ItemsPanel>
+		</ComboBox>
+	</StackPanel>
+</Window>
