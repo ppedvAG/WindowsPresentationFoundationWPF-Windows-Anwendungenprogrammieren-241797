@@ -16,6 +16,10 @@
 				<TextBlock Text="{Binding Alter}"/>
 			</StackPanel>
 		</DataTemplate>
+
+		<ItemsPanelTemplate x:Key="ThreeColTemplate">
+			<UniformGrid Columns="3"/>
+		</ItemsPanelTemplate>
 	</Window.Resources>
 	<StackPanel>
 		<!--Templates-->
@@ -78,5 +82,9 @@
 				</ItemsPanelTemplate>
 			</ComboBox.ItemsPanel>
 		</ComboBox>
+
+		<!--ItemsPanelTemplate per Resource einbinden-->
+		<ListBox ItemsSource="{Binding personen}" ItemsPanel="{StaticResource ThreeColTemplate}"/>
+		<ComboBox ItemsSource="{Binding personen}" ItemsPanel="{StaticResource ThreeColTemplate}"/>
 	</StackPanel>
 </Window>
