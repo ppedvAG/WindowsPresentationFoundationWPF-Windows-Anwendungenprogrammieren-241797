@@ -20,7 +20,7 @@
 					<AdornedElementPlaceholder Name="AEP"/>
 				</Border>
 				<Popup IsOpen="True" Placement="Bottom" PopupAnimation="Slide">
-					<!--{Binding ElementName=AEP, Path=IsMouseOver, Mode=OneWay}-->
+					<!--{Binding ElementName=AEP, Path=AdornedElement.IsMouseOver, Mode=OneWay}-->
 					<!--<ItemsControl ItemsSource="{Binding ElementName=AEP, Path=AdornedElement.(Validation.Errors)}">
 						<ItemsControl.ItemTemplate>
 							<DataTemplate DataType="ValidationError">
