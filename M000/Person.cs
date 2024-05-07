@@ -6,7 +6,7 @@ namespace M000;
 
 public class Person : INotifyPropertyChanged
 {
-	private string vorname;
+	private string vorname = string.Empty;
 
 	public string Vorname
 	{
@@ -18,7 +18,7 @@ public class Person : INotifyPropertyChanged
 		}
 	}
 
-	private string nachname;
+	private string nachname = string.Empty;
 
 	public string Nachname
 	{
@@ -30,7 +30,7 @@ public class Person : INotifyPropertyChanged
 		}
 	}
 
-	private DateTime gebDat;
+	private DateTime gebDat = DateTime.Now;
 
 	public DateTime GebDat
 	{
@@ -54,7 +54,7 @@ public class Person : INotifyPropertyChanged
 		}
 	}
 
-	private Color lieblingsfarbe;
+	private Color lieblingsfarbe = new Color();
 
 	public Color Lieblingsfarbe
 	{

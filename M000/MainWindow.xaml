@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:M000"
 		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+		xmlns:conv="clr-namespace:M000.Converter"
+		xmlns:valid="clr-namespace:M000.Validation"
         Title="MainWindow" Height="450" Width="300"
 		WindowStartupLocation="CenterScreen"
 		Topmost="True"
@@ -13,7 +15,7 @@
 		<local:Person/>
 	</Window.DataContext>-->
 	<Window.Resources>
-		<local:BooleanToGeschlechtConverter x:Key="BGC"/>
+		<conv:BooleanToGeschlechtConverter x:Key="BGC"/>
 
 		<ObjectDataProvider x:Key="Odp_Colors" MethodName="GetType" ObjectType="{x:Type sys:Type}">
 			<ObjectDataProvider.MethodParameters>
@@ -23,19 +25,43 @@
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 		<ObjectDataProvider  x:Key="Odp_ColorsProperties" MethodName="GetProperties" ObjectInstance="{StaticResource Odp_Colors}"/>
+
+		<ControlTemplate x:Key="ErrorTemp">
+			<StackPanel>
+				<Border BorderBrush="Red" BorderThickness="3">
+					<AdornedElementPlaceholder Name="AEP"/>
+				</Border>
+				<Popup IsOpen="{Binding ElementName=AEP, Path=AdornedElement.IsMouseOver, Mode=OneWay}" Placement="Bottom" PopupAnimation="Slide">
+					<TextBlock Text="{Binding ElementName=AEP, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" Background="Red"/>
+				</Popup>
+			</StackPanel>
+		</ControlTemplate>
+
+		<valid:ValidationRuleCollection x:Key="TextValidations">
+			<valid:LetterValidation ValidatesOnTargetUpdated="True"/>
+			<valid:LengthValidation ValidatesOnTargetUpdated="True"/>
+		</valid:ValidationRuleCollection>
+		<valid:DateValidation x:Key="DV" ValidatesOnTargetUpdated="True"/>
+		<valid:ColorValidation x:Key="CV" ValidatesOnTargetUpdated="True"/>
 	</Window.Resources>
 	<StackPanel Margin="5">
 		<UniformGrid Margin="0">
 			<TextBlock Text="Vorname: "/>
-			<TextBox Text="{Binding person.Vorname}"/>
+			<TextBox Text="{valid:ValidationBinding {Binding person.Vorname, UpdateSourceTrigger=PropertyChanged}, {StaticResource TextValidations}}"
+					 Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+					 Name="VornameTB"/>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Nachname: "/>
-			<TextBox Text="{Binding person.Nachname}"/>
+			<TextBox Text="{valid:ValidationBinding {Binding person.Nachname, UpdateSourceTrigger=PropertyChanged}, {StaticResource TextValidations}}"
+					 Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+					 Name="NachnameTB"/>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Geburtsdatum: "/>
-			<DatePicker SelectedDate="{Binding person.GebDat}"/>
+			<DatePicker SelectedDate="{valid:ValidationBinding {Binding person.GebDat, UpdateSourceTrigger=PropertyChanged}, {StaticResource DV}}"
+						Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+						Name="GebDatDP"/>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Verheiratet: "/>
@@ -61,8 +87,10 @@
 				</ComboBox.ItemTemplate>
 			</ComboBox>-->
 			<ComboBox ItemsSource="{local:Colors}"
-					  SelectedValue="{Binding person.Lieblingsfarbe}"
-					  SelectedValuePath="Color">
+					  SelectedValue="{valid:ValidationBinding {Binding person.Lieblingsfarbe, UpdateSourceTrigger=PropertyChanged}, {StaticResource CV}}"
+					  Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+					  SelectedValuePath="Color"
+					  Name="LieblingsfarbeCB">
 				<ComboBox.ItemTemplate>
 					<DataTemplate DataType="local:NamedColor">
 						<StackPanel Orientation="Horizontal">
@@ -90,7 +118,26 @@
 		</UniformGrid>
 		<UniformGrid>
 			<Button Content="Abbrechen" Margin="0, 0, 2.5, 0" Click="AbbrechenClicked"/>
-			<Button Content="OK" Margin="2.5, 0, 0, 0" Click="OKClicked"/>
+			<Button Content="OK" Margin="2.5, 0, 0, 0" Click="OKClicked">
+				<Button.Style>
+					<Style TargetType="Button">
+						<Setter Property="IsEnabled" Value="False"/>
+						<Style.Triggers>
+							<MultiDataTrigger>
+								<MultiDataTrigger.Conditions>
+									<Condition Binding="{Binding ElementName=VornameTB, Path=(Validation.HasError)}" Value="False"/>
+									<Condition Binding="{Binding ElementName=NachnameTB, Path=(Validation.HasError)}" Value="False"/>
+									<Condition Binding="{Binding ElementName=GebDatDP, Path=(Validation.HasError)}" Value="False"/>
+									<Condition Binding="{Binding ElementName=LieblingsfarbeCB, Path=(Validation.HasError)}" Value="False"/>
+								</MultiDataTrigger.Conditions>
+								<MultiDataTrigger.Setters>
+									<Setter Property="IsEnabled" Value="True"/>
+								</MultiDataTrigger.Setters>
+							</MultiDataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
 		</UniformGrid>
 	</StackPanel>
 
