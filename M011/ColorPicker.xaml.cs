@@ -1,9 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace M011;
 
+[ContentProperty("A")] //Sorgt dafür, dass Werte zwischen den XML Tags im XAML in das entsprechende Property geschrieben werden
 public partial class ColorPicker : UserControl
 {
 	public ColorPicker()
@@ -99,9 +101,34 @@ public partial class ColorPicker : UserControl
 		);
 
 
+
 	public static void SliderValuesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		Color c = Color.FromArgb((byte) d.GetValue(AProperty), (byte) d.GetValue(RProperty), (byte) d.GetValue(GProperty), (byte) d.GetValue(BProperty));
 		d.SetValue(PickedColorProperty, c);
+	}
+
+
+
+	public event RoutedPropertyChangedEventHandler<double> RValueChanged
+	{
+		add { AddHandler(SourceChangedEvent, value); }
+		remove { RemoveHandler(SourceChangedEvent, value); }
+	}
+
+	public static readonly RoutedEvent SourceChangedEvent = 
+		EventManager.RegisterRoutedEvent
+		(
+			nameof(RValueChanged),
+			RoutingStrategy.Direct,
+			//Events werden entweder von innen nach außen ausgeführt, oder umgekehrt
+			//Bubbling: Innen nach außen, Tunneling: Außen nach innen, Direct: Umgeht Routing (nur das Event selbst wird ausgeführt)
+			typeof(RoutedPropertyChangedEventHandler<double>),
+			typeof(UserControl)
+		);
+
+	private void RSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+	{
+		RaiseEvent(e);
 	}
 }

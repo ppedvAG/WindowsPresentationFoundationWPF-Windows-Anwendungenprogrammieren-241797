@@ -8,19 +8,25 @@
         Title="MainWindow" Height="450" Width="800"
 		DataContext="{Binding RelativeSource={RelativeSource Self}}"
 		WindowStartupLocation="CenterScreen"
-		Topmost="True">
+		Topmost="True"
+		KeyDown="Window_KeyDown"
+		MouseDown="Window_MouseDown">
 	<Window.Resources>
 		<local:ColorToBrushConverter x:Key="TV"/>
 	</Window.Resources>
-    <StackPanel>
+	<StackPanel KeyDown="StackPanel_KeyDown" MouseDown="StackPanel_MouseDown">
 		<!--UserControl-->
 		<!--Eigene UI-Komponenten zu designen-->
 		<!--Können in weiterer Folge in ein Window oder ein anderes UserControl eingebunden werden-->
-		
+
 		<!--Aufgabe: ColorPicker zu einem UserControl konvertieren und in MainWindow einbinden-->
-		<!--Aufgabe 2: Binding zwischen Person und Picked Color herstellen-->
-		<local:ColorPicker PickedColor="{Binding person.Lieblingsfarbe, UpdateSourceTrigger=PropertyChanged}" x:Name="a"/>
-		<Button Content="Test" Click="Button_Click"/>
+		<!--Aufgabe 2: Binding zwischen Person und PickedColor herstellen-->
+		<local:ColorPicker PickedColor="{Binding person.Lieblingsfarbe, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" x:Name="a"
+						   RValueChanged="a_RValueChanged"/>
+		<Button Content="Test"
+				Click="Button_Click"
+				KeyDown="Button_KeyDown"
+				MouseDown="Button_MouseDown"/>
 		<Rectangle Width="10" Height="10" Fill="{Binding ElementName=a, Path=PickedColor, Converter={StaticResource TV}}"/>
 	</StackPanel>
 </Window>

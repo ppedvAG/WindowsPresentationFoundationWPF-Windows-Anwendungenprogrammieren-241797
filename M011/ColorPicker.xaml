@@ -25,7 +25,8 @@
 					Maximum="255"
 					IsSnapToTickEnabled="True"
 					Name="RSlider"
-					Value="{Binding ElementName=Self, Path=R, Mode=TwoWay}"/>
+					Value="{Binding ElementName=Self, Path=R, Mode=TwoWay}"
+					ValueChanged="RSlider_ValueChanged"/>
 			<TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ElementName=RSlider, Path=Value}"/>
 
 			<TextBlock Grid.Column="0" Grid.Row="1" Text="G:" Foreground="Green"/>
