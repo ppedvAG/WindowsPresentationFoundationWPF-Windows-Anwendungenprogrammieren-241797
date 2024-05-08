@@ -78,6 +78,18 @@ public class Person : INotifyPropertyChanged
 		}
 	}
 
+	private int anzKinder;
+
+	public int AnzKinder
+	{
+		get => anzKinder;
+		set
+		{
+			anzKinder = value;
+			Notify();
+		}
+	}
+
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public void Notify([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

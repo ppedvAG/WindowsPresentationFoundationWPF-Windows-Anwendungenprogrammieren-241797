@@ -4,58 +4,25 @@
              xmlns:local="clr-namespace:M011"
 			 Name="Self">
 	<!--WICHTIG: Bei UserControls kann RelativeSource Self nicht verwendet werden, weil Self auf das Window evaluiert wird-->
+	<UserControl.Resources>
+		<local:ColorToBrushConverter x:Key="CBC"/>
+	</UserControl.Resources>
 	<StackPanel>
 		<Grid Height="100">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="20"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="50"/>
-			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition/>
 				<RowDefinition/>
 				<RowDefinition/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
-			<TextBlock Grid.Column="0" Grid.Row="0" Text="R:" Foreground="Red"/>
-			<Slider Grid.Column="1"
-					Grid.Row="0"
-					TickFrequency="1"
-					Minimum="0"
-					Maximum="255"
-					IsSnapToTickEnabled="True"
-					Name="RSlider"
-					Value="{Binding ElementName=Self, Path=R, Mode=TwoWay}"
-					ValueChanged="RSlider_ValueChanged"/>
-			<TextBox Grid.Column="2" Grid.Row="0" Text="{Binding ElementName=RSlider, Path=Value}"/>
-
-			<TextBlock Grid.Column="0" Grid.Row="1" Text="G:" Foreground="Green"/>
-			<Slider Grid.Column="1" Grid.Row="1" TickFrequency="1" Minimum="0" Maximum="255" IsSnapToTickEnabled="True" Name="GSlider" Value="{Binding ElementName=Self, Path=G, Mode=TwoWay}"/>
-			<TextBox Grid.Column="2" Grid.Row="1" Text="{Binding ElementName=GSlider, Path=Value}"/>
-
-			<TextBlock Grid.Column="0" Grid.Row="2" Text="B:" Foreground="Blue"/>
-			<Slider Grid.Column="1" Grid.Row="2" TickFrequency="1" Minimum="0" Maximum="255" IsSnapToTickEnabled="True" Name="BSlider" Value="{Binding ElementName=Self, Path=B, Mode=TwoWay}"/>
-			<TextBox Grid.Column="2" Grid.Row="2" Text="{Binding ElementName=BSlider, Path=Value}"/>
-
-			<TextBlock Grid.Column="0" Grid.Row="3" Text="A:" Foreground="Black"/>
-			<Slider Grid.Column="1" Grid.Row="3" TickFrequency="1" Minimum="0" Maximum="255" IsSnapToTickEnabled="True" Name="ASlider" Value="{Binding ElementName=Self, Path=A, Mode=TwoWay}"/>
-			<TextBox Grid.Column="2" Grid.Row="3" Text="{Binding ElementName=ASlider, Path=Value}"/>
+			<local:ColorPickerSlider ColorName="R" SliderColor="Red" SliderValue="{Binding ElementName=Self, Path=R, Mode=TwoWay}" Grid.Row="0"/>
+			<local:ColorPickerSlider ColorName="G" SliderColor="Green" SliderValue="{Binding ElementName=Self, Path=G, Mode=TwoWay}" Grid.Row="1"/>
+			<local:ColorPickerSlider ColorName="B" SliderColor="Blue" SliderValue="{Binding ElementName=Self, Path=B, Mode=TwoWay}" Grid.Row="2"/>
+			<local:ColorPickerSlider ColorName="A" SliderColor="Black" SliderValue="{Binding ElementName=Self, Path=A, Mode=TwoWay}" Grid.Row="3"/>
 		</Grid>
-		<TextBlock TextAlignment="Center" Text="{Binding ElementName=ColorRect, Path=Fill, StringFormat='Picked Color: {0}'}"/>
+		<TextBlock TextAlignment="Center" Text="{Binding ElementName=Self, Path=PickedColor, StringFormat='Picked Color: {0}'}"/>
 		<Border BorderBrush="Black" BorderThickness="2" Width="100" Height="100">
-			<Rectangle Name="ColorRect">
-				<Rectangle.Fill>
-					<MultiBinding>
-						<Binding ElementName="RSlider" Path="Value"/>
-						<Binding ElementName="GSlider" Path="Value"/>
-						<Binding ElementName="BSlider" Path="Value"/>
-						<Binding ElementName="ASlider" Path="Value"/>
-						<MultiBinding.Converter>
-							<local:FourValueToBrushConverter/>
-						</MultiBinding.Converter>
-					</MultiBinding>
-				</Rectangle.Fill>
-			</Rectangle>
+			<Rectangle Name="ColorRect" Fill="{Binding ElementName=Self, Path=PickedColor, Converter={StaticResource CBC}}"/>
 		</Border>
 	</StackPanel>
 </UserControl>

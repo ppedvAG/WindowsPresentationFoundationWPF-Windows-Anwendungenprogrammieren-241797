@@ -43,6 +43,7 @@
 		</valid:ValidationRuleCollection>
 		<valid:DateValidation x:Key="DV" ValidatesOnTargetUpdated="True"/>
 		<valid:ColorValidation x:Key="CV" ValidatesOnTargetUpdated="True"/>
+		<valid:AnzahlKinderValidation x:Key="AV" ValidatesOnTargetUpdated="True"/>
 	</Window.Resources>
 	<StackPanel Margin="5">
 		<UniformGrid Margin="0">
@@ -117,6 +118,12 @@
 			</StackPanel>
 		</UniformGrid>
 		<UniformGrid>
+			<TextBlock Text="Anzahl Kinder: "/>
+			<local:IntegerUpDown Value="{valid:ValidationBinding {Binding person.AnzKinder, Mode=TwoWay}, {StaticResource AV}}"
+								 Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+								 x:Name="AnzKinderIUD"/>
+		</UniformGrid>
+		<UniformGrid>
 			<Button Content="Abbrechen" Margin="0, 0, 2.5, 0" Click="AbbrechenClicked"/>
 			<Button Content="OK" Margin="2.5, 0, 0, 0" Click="OKClicked">
 				<Button.Style>
@@ -129,6 +136,7 @@
 									<Condition Binding="{Binding ElementName=NachnameTB, Path=(Validation.HasError)}" Value="False"/>
 									<Condition Binding="{Binding ElementName=GebDatDP, Path=(Validation.HasError)}" Value="False"/>
 									<Condition Binding="{Binding ElementName=LieblingsfarbeCB, Path=(Validation.HasError)}" Value="False"/>
+									<Condition Binding="{Binding ElementName=AnzKinderIUD, Path=(Validation.HasError)}" Value="False"/>
 								</MultiDataTrigger.Conditions>
 								<MultiDataTrigger.Setters>
 									<Setter Property="IsEnabled" Value="True"/>

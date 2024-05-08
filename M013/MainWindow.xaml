@@ -1,0 +1,83 @@
+﻿<Window x:Class="M013.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M013"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="450" Width="800"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<Window.Resources>
+		<local:DateTimeConverter x:Key="DTC"/>
+		<local:CollectionAppendConverter x:Key="CAC"/>
+	</Window.Resources>
+    <Grid>
+		<!--DataGrid-->
+		<!--Wird verwendet um Daten in einer tabellarischen Form darzustellen-->
+		
+		<!--Standardmäßig erzeugt das DG für jeden Datensatz eine Zeile + Spalten-->
+		<!--Width="*": Passt die Spalte(n) auf die Breite des DataGrids an-->
+		<!--Row-/ColumnVirtualization: Versteckt Zeilen/Spalten wenn diese nicht im Bild sind-->
+		<!--Wird benötigt für große DataGrids (viele Daten)-->
+		<DataGrid ItemsSource="{Binding personen}"
+				  AutoGenerateColumns="False"
+				  CanUserAddRows="False"
+				  CanUserDeleteRows="False"
+				  CanUserResizeRows="False"
+				  AlternatingRowBackground="GhostWhite"
+				  AlternationCount="5"
+				  EnableRowVirtualization="True"
+				  IsReadOnly="True">
+			<!--Hier können wir jetzt für jedes Feld in Person eine Column im DataGrid erstellen-->
+			
+			<!--Normale Columns: ID, Vorname, Nachname-->
+			<!--Geburtsdatum anpassen (keine Zeit und deutsches Datum)-->
+			<!--Beruf zerlegen in Titel, Einstellungsdatum, Gehalt-->
+			<!--Hobbies zerlegen in eine Liste mit Kommas getrennt-->
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding ID}" Header="ID"/>
+				<DataGridTextColumn Binding="{Binding Vorname}" Header="Vorname"/>
+				<DataGridTextColumn Binding="{Binding Nachname}" Header="Nachname"/>
+				<DataGridTextColumn Binding="{Binding Geburtsdatum, Converter={StaticResource DTC}, ConverterParameter='dddd, dd. MMMM. yyyy'}" Header="Geburtsdatum"/>
+				<DataGridTextColumn Binding="{Binding Alter}" Header="Alter">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Setter Property="Background" Value="Aqua"/>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Binding="{Binding Job.Titel}" Header="Jobtitel"/>
+				<DataGridTextColumn Binding="{Binding Job.Einstellungsdatum, Converter={StaticResource DTC}, ConverterParameter='dd.MM.yyyy'}" Header="Einstellungsdatum"/>
+				<DataGridTextColumn Binding="{Binding Job.Gehalt, StringFormat='\{0}€'}" Header="Gehalt"/>
+				<DataGridTextColumn Binding="{Binding Hobbies, Converter={StaticResource CAC}}" Header="Hobbies"/>
+				<!--Person löschen Button bei jeder Person anzeigen-->
+				<DataGridTemplateColumn>
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<StackPanel.Resources>
+									<ControlTemplate TargetType="Button" x:Key="BtnTemplate">
+										<TextBlock Text="{TemplateBinding Content}">
+											<TextBlock.Style>
+												<Style TargetType="TextBlock">
+													<Style.Triggers>
+														<Trigger Property="IsMouseOver" Value="True">
+															<Setter Property="Background" Value="Aqua"/>
+														</Trigger>
+													</Style.Triggers>
+												</Style>
+											</TextBlock.Style>
+										</TextBlock>
+									</ControlTemplate>
+								</StackPanel.Resources>
+								<Button Content="Person bearbeiten" Template="{StaticResource BtnTemplate}">
+									<!--...-->
+								</Button>
+								<Button Content="Person löschen" Click="Button_Click" Tag="{Binding .}" Template="{StaticResource BtnTemplate}"/>
+							</StackPanel>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+    </Grid>
+</Window>

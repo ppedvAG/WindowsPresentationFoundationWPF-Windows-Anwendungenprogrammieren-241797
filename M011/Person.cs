@@ -6,7 +6,7 @@ namespace M000;
 
 public class Person : INotifyPropertyChanged
 {
-	private Color lieblingsfarbe;
+	private Color lieblingsfarbe = Color.FromArgb(255, 255, 255, 255);
 
 	public Color Lieblingsfarbe
 	{

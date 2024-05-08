@@ -21,7 +21,8 @@
 
 		<!--Aufgabe: ColorPicker zu einem UserControl konvertieren und in MainWindow einbinden-->
 		<!--Aufgabe 2: Binding zwischen Person und PickedColor herstellen-->
-		<local:ColorPicker PickedColor="{Binding person.Lieblingsfarbe, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" x:Name="a"
+		<!--Aufgabe 3: Die 4 Slider jeweils in ein UserControl zu konvertieren-->
+		<local:ColorPicker PickedColor="{Binding person.Lieblingsfarbe, Mode=TwoWay}" x:Name="a"
 						   RValueChanged="a_RValueChanged"/>
 		<Button Content="Test"
 				Click="Button_Click"

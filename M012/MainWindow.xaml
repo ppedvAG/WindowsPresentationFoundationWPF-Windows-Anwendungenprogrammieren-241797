@@ -1,0 +1,57 @@
+﻿<Window x:Class="M012.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M012"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+		WindowStartupLocation="CenterScreen"
+		Topmost="True">
+	<StackPanel>
+		<!--Relative Quellen/Relative Binding-->
+		<!--Bindings auf Elemente, welche zur Editorzeit nicht bekannt sind-->
+
+		<!--Self-->
+		<!--Bindung auf sich selbst-->
+
+		<!--Aufgabe: Rechteck soll immer ein Quadrat sein-->
+		<Rectangle Width="{Binding ElementName=TestSlider, Path=Value}"
+				   Height="{Binding RelativeSource={RelativeSource Self}, Path=Width}"
+				   Fill="Aqua"/>
+		<Slider Maximum="100" Name="TestSlider"/>
+
+		<!--TemplatedParent-->
+		<!--effektiv TemplateBinding-->
+		<Button Height="30">
+			<Button.Template>
+				<ControlTemplate TargetType="Button">
+					<StackPanel>
+						<!--Dreimal der selbe Effekt-->
+						<TextBlock Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Height}"/>
+						<TextBlock Height="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"/>
+						<TextBlock Height="{TemplateBinding Height}"/>
+					</StackPanel>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+		
+		<!--FindAncestor-->
+		<!--Sucht nach einer Komponente mit dem gegebenen Typen + Level-->
+		<Grid Background="Orange">
+			<Button Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType=Grid}, Path=Background}"
+					Content="Test"/>
+		</Grid>
+		
+		<!--PreviousData-->
+		<!--Kann innerhalb von Listenkomponenten verwendet werden, um auf den vorherigen Datensatz zuzugreifen-->
+		<ListBox ItemsSource="{Binding Data}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding RelativeSource={RelativeSource Mode=PreviousData}, Path=.}"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</StackPanel>
+</Window>
