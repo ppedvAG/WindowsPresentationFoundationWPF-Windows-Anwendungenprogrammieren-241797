@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Windows.Media;
 
 namespace M000;
@@ -93,4 +94,9 @@ public class Person : INotifyPropertyChanged
 	public event PropertyChangedEventHandler? PropertyChanged;
 
 	public void Notify([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+	public Person Clone()
+	{
+		return (Person) MemberwiseClone();
+	}
 }

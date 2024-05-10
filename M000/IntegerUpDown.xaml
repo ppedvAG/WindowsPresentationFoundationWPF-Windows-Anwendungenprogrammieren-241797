@@ -8,10 +8,10 @@
 			<ColumnDefinition/>
 			<ColumnDefinition Width="30"/>
 		</Grid.ColumnDefinitions>
-		<TextBox Text="{Binding ElementName=Self, Path=Value}"/>
+		<TextBox Text="{Binding ElementName=Self, Path=Value}" VerticalContentAlignment="Center"/>
 		<StackPanel Grid.Column="1">
-			<Button Content="&#11205;" Click="UpClicked"/>
-			<Button Content="&#11206;" Click="DownClicked"/>
+			<Button Content="&#11205;" Click="UpClicked" FontSize="8"/>
+			<Button Content="&#11206;" Click="DownClicked" FontSize="8"/>
 		</StackPanel>
 	</Grid>
 </UserControl>
