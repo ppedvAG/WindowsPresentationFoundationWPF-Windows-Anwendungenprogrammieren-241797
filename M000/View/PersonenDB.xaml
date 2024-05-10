@@ -1,15 +1,18 @@
-﻿<Window x:Class="M000.PersonenDB"
+﻿<Window x:Class="M000.View.PersonenDB"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:M000"
 		xmlns:conv="clr-namespace:M000.Converter"
+		xmlns:vm="clr-namespace:M000.ViewModel"
 		WindowStartupLocation="CenterScreen"
 		Topmost="True"
         Title="PersonenDB" 
 		Height="450"
 		Width="800"
-		Style="{StaticResource GlobalWindowStyle}"
-		DataContext="{Binding RelativeSource={RelativeSource Self}}">
+		Style="{StaticResource GlobalWindowStyle}">
+	<Window.DataContext>
+		<vm:PersonenDBViewModel/>
+	</Window.DataContext>
 	<Window.Resources>
 		<conv:ColorToBrushConverter x:Key="CBC"/>
 		<conv:SelectedItemConverter x:Key="SIC"/>
@@ -23,7 +26,7 @@
 		
 		<Menu Grid.Row="0" Background="{x:Null}">
 			<MenuItem Header="Datei">
-				<MenuItem Header="Beenden" Click="MenuItem_Click"/>
+				<MenuItem Header="Beenden" Command="{Binding BeendenCommand}"/>
 			</MenuItem>
 		</Menu>
 
@@ -66,9 +69,19 @@
 					</Style.Triggers>
 				</Style>
 			</StackPanel.Resources>
-			<Button Content="Person hinzufügen" Width="150" Click="NeuePersonClicked"/>
-			<Button Content="Person ändern" Margin="5, 0, 0, 0"  Width="150" Click="PersonBearbeitenClicked" Style="{StaticResource ButtonTrigger}"/>
-			<Button Content="Person löschen" Margin="5, 0, 0, 0"  Width="150" Click="PersonEntfernenClicked" Style="{StaticResource ButtonTrigger}"/>
+			<Button Content="Person hinzufügen" Width="150" Command="{Binding NeuePersonCommand}"/>
+			<Button Content="Person ändern"
+					Margin="5, 0, 0, 0"
+					Width="150"
+					Style="{StaticResource ButtonTrigger}"
+					Command="{Binding PersonBearbeitenCommand}"
+					CommandParameter="{Binding ElementName=DG, Path=SelectedItem}"/>
+			<Button Content="Person löschen"
+					Margin="5, 0, 0, 0"
+					Width="150"
+					Style="{StaticResource ButtonTrigger}"
+					Command="{Binding PersonEntfernenCommand}"
+					CommandParameter="{Binding ElementName=DG, Path=SelectedItem}"/>
 		</StackPanel>
 	</Grid>
 </Window>

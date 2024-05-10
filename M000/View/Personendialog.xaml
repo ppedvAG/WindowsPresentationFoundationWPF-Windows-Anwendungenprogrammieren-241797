@@ -1,22 +1,28 @@
-﻿<Window x:Class="M000.Personendialog"
+﻿<Window x:Class="M000.View.Personendialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:M000"
-		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
 		xmlns:conv="clr-namespace:M000.Converter"
 		xmlns:valid="clr-namespace:M000.Validation"
+		xmlns:util="clr-namespace:M000.Util"
+		xmlns:uc="clr-namespace:M000.View.UserControls"
+		xmlns:model="clr-namespace:M000.Model"
+		xmlns:vm="clr-namespace:M000.ViewModel"
+		xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+		
         Title="Personendialog" Height="450" Width="300"
 		WindowStartupLocation="CenterScreen"
 		Topmost="True"
 		SizeToContent="Height"
-		DataContext="{Binding RelativeSource={RelativeSource Self}}"
-		Style="{StaticResource GlobalWindowStyle}">
+		Style="{StaticResource GlobalWindowStyle}"
+		Name="PD">
+	<Window.DataContext>
+		<vm:PersonendialogViewModel/>
+	</Window.DataContext>
 	<!--<Window.DataContext>
 		<local:Person/>
 	</Window.DataContext>-->
 	<Window.Resources>
-		<conv:BooleanToGeschlechtConverter x:Key="BGC"/>
-
 		<ObjectDataProvider x:Key="Odp_Colors" MethodName="GetType" ObjectType="{x:Type sys:Type}">
 			<ObjectDataProvider.MethodParameters>
 				<sys:String>
@@ -87,7 +93,7 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>-->
-			<ComboBox ItemsSource="{local:Colors}"
+			<ComboBox ItemsSource="{util:Colors}"
 					  SelectedValue="{valid:ValidationBinding {Binding person.Lieblingsfarbe, UpdateSourceTrigger=PropertyChanged}, {StaticResource CV}}"
 					  Validation.ErrorTemplate="{StaticResource ErrorTemp}"
 					  SelectedValuePath="Color"
@@ -112,20 +118,20 @@
 		<UniformGrid>
 			<TextBlock Text="Geschlecht: "/>
 			<StackPanel>
-				<RadioButton GroupName="Gender" Content="M" IsChecked="{Binding person.Geschlecht, Converter={StaticResource BGC}, ConverterParameter={x:Static local:Geschlecht.M}}"/>
-				<RadioButton GroupName="Gender" Content="W" IsChecked="{Binding person.Geschlecht, Converter={StaticResource BGC}, ConverterParameter={x:Static local:Geschlecht.W}}"/>
-				<RadioButton GroupName="Gender" Content="D" IsChecked="{Binding person.Geschlecht, Converter={StaticResource BGC}, ConverterParameter={x:Static local:Geschlecht.D}}"/>
+				<RadioButton GroupName="Gender" Content="M" IsChecked="{Binding person.Geschlecht, Converter={util:Converter ConverterType=conv:BooleanToGeschlechtConverter}, ConverterParameter={x:Static model:Geschlecht.M}}"/>
+				<RadioButton GroupName="Gender" Content="W" IsChecked="{Binding person.Geschlecht, Converter={util:Converter ConverterType=conv:BooleanToGeschlechtConverter}, ConverterParameter={x:Static model:Geschlecht.W}}"/>
+				<RadioButton GroupName="Gender" Content="D" IsChecked="{Binding person.Geschlecht, Converter={util:Converter ConverterType=conv:BooleanToGeschlechtConverter}, ConverterParameter={x:Static model:Geschlecht.D}}"/>
 			</StackPanel>
 		</UniformGrid>
 		<UniformGrid>
 			<TextBlock Text="Anzahl Kinder: "/>
-			<local:IntegerUpDown Value="{valid:ValidationBinding {Binding person.AnzKinder, Mode=TwoWay}, {StaticResource AV}}"
-								 Validation.ErrorTemplate="{StaticResource ErrorTemp}"
-								 x:Name="AnzKinderIUD"/>
+			<uc:IntegerUpDown Value="{valid:ValidationBinding {Binding person.AnzKinder, Mode=TwoWay}, {StaticResource AV}}"
+							  Validation.ErrorTemplate="{StaticResource ErrorTemp}"
+							  x:Name="AnzKinderIUD"/>
 		</UniformGrid>
 		<UniformGrid>
-			<Button Content="Abbrechen" Margin="0, 0, 2.5, 0" Click="AbbrechenClicked"/>
-			<Button Content="OK" Margin="2.5, 0, 0, 0" Click="OKClicked">
+			<Button Content="Abbrechen" Margin="0, 0, 2.5, 0" Command="{Binding AbbrechenCommand}" CommandParameter="{Binding ElementName=PD}"/>
+			<Button Content="OK" Margin="2.5, 0, 0, 0" Command="{Binding OKCommand}" CommandParameter="{Binding ElementName=PD}">
 				<Button.Style>
 					<Style TargetType="Button">
 						<Setter Property="IsEnabled" Value="False"/>

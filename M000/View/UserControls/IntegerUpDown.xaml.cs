@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace M000;
+namespace M000.View.UserControls;
 
 public partial class IntegerUpDown : UserControl
 {

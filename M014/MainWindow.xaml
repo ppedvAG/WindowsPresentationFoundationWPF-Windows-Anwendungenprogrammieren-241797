@@ -1,0 +1,29 @@
+﻿<Window x:Class="M014.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:M014"
+		xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        Title="MainWindow" Height="450" Width="800"
+		DataContext="{Binding RelativeSource={RelativeSource Self}}"
+		Name="MW">
+    <StackPanel>
+		<!--Commands-->
+		<!--"Methodenzeiger", welche normale Events ersetzen-->
+		<!--Wird immer bei MVVM benötigt-->
+		<Button Command="{Binding CustomClose}"
+				CommandParameter="{Binding ElementName=MW}"
+				Content="Test Command"/>
+		
+		<!--Commands haben immer nur ein Event (bei Button Click)-->
+		<!--Wenn wir andere Events anbinden wollen, benötigen wir den Behaviors Namespace-->
+		<!--NuGet: Microsoft.Xaml.Behaviors.Wpf-->
+		<Button Content="Test KeyDown">
+			<b:Interaction.Triggers>
+				<b:EventTrigger EventName="KeyDown">
+					<b:InvokeCommandAction Command="{Binding CustomClose}"
+										   CommandParameter="{Binding ElementName=MW}"/>
+				</b:EventTrigger>
+			</b:Interaction.Triggers>
+		</Button>
+	</StackPanel>
+</Window>

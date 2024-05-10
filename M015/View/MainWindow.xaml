@@ -1,0 +1,28 @@
+﻿<Window x:Class="M015.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M015"
+		xmlns:vm="clr-namespace:M015.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+	<Window.DataContext>
+		<vm:MainWindowViewModel/>
+	</Window.DataContext>
+    <StackPanel>
+		<!--MVVM-->
+		<!--Logische Aufteilung in Model, View und ViewModel-->
+		
+		<!--View: GUI im XAML-->
+		<!--Model: Datenklassen (Person, Geschlecht, ...)-->
+		<!--ViewModel: Backendcode-->
+		
+		<!--.xaml.cs Dateien werden in MVVM nicht mehr verwendet-->
+		<!--Stattdessen wird es eine normale C# Klasse geben namens <Fenster>ViewModel.cs-->
+		<!--Die ViewModel Klasse wird per DataContext eingebunden-->
+		<Button Content="Test"
+				Command="{Binding TestCommand}"/>
+		<DataGrid ItemsSource="{Binding personen}"/>
+	</StackPanel>
+</Window>
